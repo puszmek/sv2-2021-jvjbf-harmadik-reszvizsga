@@ -13,10 +13,16 @@ public class RentService {
     Map<Rentable, User> actualRenting = new TreeMap<>();    // az aktuális rendelések mindig időrendben legyenek tárolva
 
     public void registerUser(User user) {
-        if (!users.contains(user.getUserName())) {     // Ha egy felhasználnév már foglalt
+        if (isUserNameTaken(user.getUserName())) {     // Ha egy felhasználnév már foglalt
             throw new UserNameIsAlreadyTakenException("Username is taken!");
         }
         users.add(user);
+    }
+
+    private boolean isUserNameTaken(String name) {
+        return users.stream()
+                .map(user -> user.getUserName())
+                .anyMatch(s -> s.equals(name));
     }
 
     public void addRentable(Rentable rentable) {
@@ -24,8 +30,8 @@ public class RentService {
     }
 
     public void rent(User user, Rentable rentable, LocalTime time) {
-        if (users.contains(user) || rentables.contains(rentable) || user.getBalance() < rentable.calculateSumPrice(3*60) || rentable.getRentingTime() != null) {
-            throw new IllegalStateException("Something is wrong!");
+        if (rentable.getRentingTime() != null || user.getBalance() < rentable.calculateSumPrice(3*60)) {
+            throw new IllegalStateException("Rentable is taken or low money!");
         }
         rentable.rent(time);
         actualRenting.put(rentable, user);
@@ -33,11 +39,12 @@ public class RentService {
 
     public void closeRent(Rentable rentable, int minutes) {
         if (!actualRenting.containsKey(rentable)) {
-            throw new IllegalArgumentException("Cannot found!");
+            throw new IllegalArgumentException("Rentable is not taken!");
         }
-        User user = actualRenting.remove(rentable);
-        rentable.closeRent();
+        User user = actualRenting.get(rentable);
         user.minusBalance(rentable.calculateSumPrice(minutes));
+        actualRenting.remove(rentable);
+        rentable.closeRent();
     }
 
     public Set<User> getUsers() {

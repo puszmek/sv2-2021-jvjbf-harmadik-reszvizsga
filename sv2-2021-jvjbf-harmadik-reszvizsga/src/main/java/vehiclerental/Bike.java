@@ -4,12 +4,12 @@ import java.time.LocalTime;
 
 public class Bike implements Rentable {
 
-    private String idBike;
-    private LocalTime rentingTimeBike;
+    private String id;
+    private LocalTime rentingTime;
     private static final int PRICE_PER_MINUTE = 15;
 
-    public Bike(String idBike) {
-        this.idBike = idBike;
+    public Bike(String id) {
+        this.id = id;
     }
 
     @Override
@@ -19,24 +19,16 @@ public class Bike implements Rentable {
 
     @Override
     public LocalTime getRentingTime() {
-        return rentingTimeBike;
+        return rentingTime;
     }
 
     @Override
     public void rent(LocalTime time) {
-        rentingTimeBike = time;
+        rentingTime = time;
     }
 
     @Override
     public void closeRent() {
-        rentingTimeBike = null;
-    }
-
-    public String getIdBike() {
-        return idBike;
-    }
-
-    public LocalTime getRentingTimeBike() {
-        return rentingTimeBike;
+        rentingTime = null;
     }
 }

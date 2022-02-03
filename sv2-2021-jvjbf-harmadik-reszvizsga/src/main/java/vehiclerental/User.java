@@ -12,8 +12,8 @@ public class User {
         this.balance = balance;
     }
 
-    public void minusBalance(int number) {
-        balance -= number;
+    public void minusBalance(int amount) {
+        balance -= amount;
     }
 
     public String getUserName() {

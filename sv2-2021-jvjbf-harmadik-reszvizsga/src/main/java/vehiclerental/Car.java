@@ -4,12 +4,12 @@ import java.time.LocalTime;
 
 public class Car implements Rentable {
 
-    private String idCar;
-    private LocalTime rentingTimeCar;
+    private String id;
+    private LocalTime rentingTime;
     private int pricePerMinute;
 
-    public Car(String idCar, int pricePerMinute) {
-        this.idCar = idCar;
+    public Car(String id, int pricePerMinute) {
+        this.id = id;
         this.pricePerMinute = pricePerMinute;
     }
 
@@ -20,28 +20,16 @@ public class Car implements Rentable {
 
     @Override
     public LocalTime getRentingTime() {
-        return rentingTimeCar;
+        return rentingTime;
     }
 
     @Override
     public void rent(LocalTime time) {
-        rentingTimeCar = time;
+        rentingTime = time;
     }
 
     @Override
     public void closeRent() {
-        rentingTimeCar = null;
-    }
-
-    public String getIdCar() {
-        return idCar;
-    }
-
-    public LocalTime getRentingTimeCar() {
-        return rentingTimeCar;
-    }
-
-    public int getPricePerMinute() {
-        return pricePerMinute;
+        rentingTime = null;
     }
 }

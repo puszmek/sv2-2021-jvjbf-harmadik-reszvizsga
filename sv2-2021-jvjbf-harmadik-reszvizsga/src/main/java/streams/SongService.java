@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class SongService {
 
@@ -15,21 +14,26 @@ public class SongService {
         songs.add(song);
     }
 
-    public Optional<Song> shortestSong(){     // legrövidebb dalt, Optional-ként
+    public Optional<Song> shortestSong() {     // legrövidebb dalt, Optional-ként
         return songs.stream()
                 .min(Comparator.comparing(Song::getLength));    //  .min((s1, s2) -> s1.getLength() - s2.getLength());
+//        return songs.stream()
+//                .sorted(Comparator.comparing(s->s.getLength()))
+//                .findFirst();
     }
 
     public List<Song> findSongByTitle(String title) {       // dalok listáját cím alapján! (Két dalnak lehet ugyanaz a címe)
         return songs.stream()
                 .filter(song -> song.getTitle().equals(title))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public boolean isPerformerInSong(Song song, String name) {     // egy előadó szerepel-e egy konkrét dal előadóinak listájában
         return song.getPerformers().stream()
                 .anyMatch(s -> s.equals(name));
-
+//        return songs.stream()
+//                .filter(s->s.getTitle().equals(song.getTitle()))
+//                .anyMatch(s->s.getPerformers().contains(name));
     }
 
     public List<String> titlesBeforeDate(LocalDate date) {      // az összes dal címét, ami egy paraméterül átadott dátum előtt jelent meg
